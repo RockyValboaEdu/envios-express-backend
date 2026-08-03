@@ -32,7 +32,7 @@ public class Usuario {
     private String telefono;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "rol", nullable = false)
     private Rol rol;
 
     @Builder.Default

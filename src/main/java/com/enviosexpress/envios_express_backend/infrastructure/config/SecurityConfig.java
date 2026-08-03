@@ -4,6 +4,7 @@ import com.enviosexpress.envios_express_backend.infrastructure.security.JwtAuthF
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -46,9 +47,14 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/v3/api-docs.yaml")
                         .permitAll()
+                        // Rutas específicas de RECEPCIONISTA, ANTES de la regla general de /api/usuarios
+                        .requestMatchers(HttpMethod.GET, "/api/usuarios/buscar").hasAnyRole("ADMIN", "RECEPCIONISTA", "DESPACHADOR")
+                        .requestMatchers(HttpMethod.POST, "/api/usuarios/clientes").hasAnyRole("ADMIN", "RECEPCIONISTA")
                         .requestMatchers("/api/vehiculos/**").hasAnyRole("ADMIN", "DESPACHADOR")
                         .requestMatchers("/api/rutas/**").hasAnyRole("ADMIN", "DESPACHADOR")
-                        .requestMatchers("/api/envios/**").hasAnyRole("ADMIN", "DESPACHADOR", "CLIENTE")
+                        .requestMatchers(HttpMethod.GET, "/api/envios/seguimiento/**").permitAll()
+                        .requestMatchers("/api/envios/**")
+                        .hasAnyRole("ADMIN", "DESPACHADOR", "CLIENTE", "RECEPCIONISTA")
                         .requestMatchers("/api/usuarios/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider())

@@ -1,12 +1,20 @@
 package com.enviosexpress.envios_express_backend.web.dto.request;
 
+import com.enviosexpress.envios_express_backend.domain.model.Rol;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+/**
+ * DTO usado unicamente por el endpoint protegido POST /api/usuarios,
+ * restringido a ADMIN en SecurityConfig. Aqui SI se permite elegir el rol,
+ * porque quien llama a este endpoint ya fue autenticado como ADMIN.
+ */
 @Data
-public class RegistroRequest {
+public class CrearUsuarioRequest {
 
     @NotBlank(message = "El nombre es obligatorio")
     private String nombre;
@@ -20,4 +28,7 @@ public class RegistroRequest {
     private String password;
 
     private String telefono;
+
+    @NotNull(message = "El rol es obligatorio")
+    private Rol rol;
 }
