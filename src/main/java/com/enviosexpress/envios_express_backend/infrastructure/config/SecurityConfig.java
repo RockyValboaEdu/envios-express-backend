@@ -47,8 +47,10 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/v3/api-docs.yaml")
                         .permitAll()
-                        // Rutas específicas de RECEPCIONISTA, ANTES de la regla general de /api/usuarios
-                        .requestMatchers(HttpMethod.GET, "/api/usuarios/buscar").hasAnyRole("ADMIN", "RECEPCIONISTA", "DESPACHADOR")
+                        // Rutas específicas de RECEPCIONISTA, ANTES de la regla general de
+                        // /api/usuarios
+                        .requestMatchers(HttpMethod.GET, "/api/usuarios/buscar")
+                        .hasAnyRole("ADMIN", "RECEPCIONISTA", "DESPACHADOR")
                         .requestMatchers(HttpMethod.POST, "/api/usuarios/clientes").hasAnyRole("ADMIN", "RECEPCIONISTA")
                         .requestMatchers("/api/vehiculos/**").hasAnyRole("ADMIN", "DESPACHADOR")
                         .requestMatchers("/api/rutas/**").hasAnyRole("ADMIN", "DESPACHADOR")
@@ -84,7 +86,12 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:3000"));
+        // configuration.setAllowedOrigins(List.of("http://localhost:5173",
+        // "http://localhost:3000"));
+        configuration.setAllowedOrigins(List.of(
+                "http://localhost:5173",
+                "http://localhost:3000"
+        ));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
